@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: User
+Build-Jdk: version 1.8.0_282
+Implementation-Title: Internet provider
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.provider.internet
+Main-Class: ${start-class}
+
