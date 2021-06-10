@@ -1,7 +1,11 @@
 package com.provider.internet.controller;
 
+import com.provider.internet.controller.util.Util;
 import com.provider.internet.controller.util.constants.Attributes;
 import com.provider.internet.controller.util.constants.Views;
+import com.provider.internet.controller.util.validator.AmountValidator;
+import com.provider.internet.controller.util.validator.ServiceIdValidator;
+import com.provider.internet.controller.util.validator.TariffNameValidator;
 import com.provider.internet.model.entity.IncludedOption;
 import com.provider.internet.model.entity.Tariff;
 import com.provider.internet.model.mapper.OptionMapper;
@@ -23,6 +27,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static com.provider.internet.controller.util.constants.Attributes.*;
+import static com.provider.internet.controller.util.constants.Errors.*;
 import static com.provider.internet.controller.util.constants.Views.CREATE_TARIFF_VIEW;
 
 @Controller
@@ -50,23 +55,48 @@ public class CrateTariffController {
     @PostMapping
     public String createTariff(HttpServletRequest request,
                                @RequestParam(TARIFF_NAME) String tariffName,
-                               @RequestParam(COST) BigDecimal cost,
-                               @RequestParam(SERVICE_ID) long serviceId,
-                               @RequestParam(OPTION_ID) String[] optionsId) {
-        Tariff tariff = new Tariff();
+                               @RequestParam(COST) Optional<BigDecimal> cost,
+                               @RequestParam(SERVICE_ID) String serviceId,
+                               @RequestParam(OPTION_ID) Optional<String[]> optionsId) {
+        List<String> errors = new ArrayList<>();
+        if (!optionsId.isPresent()){
+            errors.add(EMPTY_OPTION);
+        }
+        if (!errors.isEmpty()){
+            errors.add(String.valueOf(validateDataFromRequest(request)));
+            request.setAttribute(Attributes.ERRORS, errors);
+            request.setAttribute(SERVICES,
+                    serviceMapper.serviceListToServiceDtoList(serviceService.findAllService()));
+            request.setAttribute(Attributes.OPTIONS, includedOptionMapper.
+                    includedOptionsToIncludedOptionsDtoList(includedOptionService.findAllIncludedOption()));
+            return CREATE_TARIFF_VIEW;
+        }
 
+        Tariff tariff = new Tariff();
         Set<IncludedOption> includedOptions = new HashSet<>();
-        for (String optionId : optionsId) {
+        for (String optionId : optionsId.get()) {
             Optional<IncludedOption> includedOption = includedOptionService.findIncludedOptionById(Long.parseLong(optionId));
             includedOption.ifPresent(includedOptions::add);
         }
 
         tariff.setIncludedOptions(includedOptions);
-        tariff.setCost(cost);
-        if (serviceService.findServiceById(serviceId).isPresent())
-        tariff.setService(serviceService.findServiceById(serviceId).get());
+        tariff.setCost(cost.get());
+        if (serviceService.findServiceById(Long.parseLong(serviceId)).isPresent())
+        tariff.setService(serviceService.findServiceById(Long.parseLong(serviceId)).get());
         tariff.setTariffName(tariffName);
         tariffService.createTariff(tariff);
         return REDIRECTED + bundle.getString("service.path");
     }
+
+    private List<String> validateDataFromRequest(HttpServletRequest request) {
+        List<String> errors = new ArrayList<>();
+        Util.validateField(new AmountValidator(),
+                request.getParameter(COST), errors);
+        Util.validateField(new ServiceIdValidator(),
+                request.getParameter(SERVICE_ID), errors);
+        Util.validateField(new TariffNameValidator(),
+                request.getParameter(TARIFF_NAME), errors);
+        return errors;
+    }
 }
+

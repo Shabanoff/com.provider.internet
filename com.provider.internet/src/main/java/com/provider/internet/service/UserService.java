@@ -10,6 +10,9 @@ import com.provider.internet.model.entity.User;
 import com.provider.internet.model.enums.Status;
 import com.provider.internet.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -33,7 +36,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final IncludedPackageService includedPackageService;
 
-    public List<User> findAllUser() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 

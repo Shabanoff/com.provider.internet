@@ -36,8 +36,7 @@ public class ReplenishController {
     private final UserMapper userMapper;
 
     @GetMapping
-    public String viewReplenishPage(HttpServletRequest request) {
-        request.setAttribute(Attributes.USERS, userMapper.usersToUsersDtoList(userService.findAllUser()));
+    public String viewReplenishPage() {
         return "replenish";
     }
 

@@ -45,7 +45,7 @@ public class CreateUserController {
         public String createUser(HttpServletRequest request,
                                  @RequestParam(LOGIN) String login,
                                  @RequestParam(PASSWORD) String password) {
-            List<User> users = userService.findAllUser();
+            List<User> users = userService.findAll();
             List<String> errors = new ArrayList<>();
             for (User user: users) {
                 if (user.getLogin().equals(login)){
