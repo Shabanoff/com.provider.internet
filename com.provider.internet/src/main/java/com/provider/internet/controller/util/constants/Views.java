@@ -2,17 +2,16 @@ package com.provider.internet.controller.util.constants;
 
 public interface Views {
     String PAGES_BUNDLE = "pagespath";
-    String FOLDER = "/WEB-INF/views/";
-    String HOME_VIEW = FOLDER + "index.jsp";
-    String ACCOUNT_VIEW = FOLDER + "account.jsp";
+    String HOME_VIEW = "index";
+    String ACCOUNT_VIEW = "account";
     String LOGIN_VIEW = "login";
-    String REPLENISH_VIEW = FOLDER + "replenish.jsp";
+    String REPLENISH_VIEW = "replenish";
     String SERVICE_VIEW = "service";
-    String CREATE_USER_VIEW = FOLDER + "createUser.jsp";
+    String CREATE_USER_VIEW = "createUser";
     String CREATE_TARIFF_VIEW = "createTariff";
-    String CREATE_OPTION_VIEW = FOLDER + "createOption.jsp";
-    String OPTION_VIEW = FOLDER + "includedOption.jsp";
-    String CREATE_SERVICE_VIEW = FOLDER + "createService.jsp";
-    String USERS_VIEW = FOLDER + "users.jsp";
+    String CREATE_OPTION_VIEW = "createOption";
+    String OPTION_VIEW = "includedOption";
+    String CREATE_SERVICE_VIEW = "createService";
+    String USERS_VIEW = "users";
 
 }

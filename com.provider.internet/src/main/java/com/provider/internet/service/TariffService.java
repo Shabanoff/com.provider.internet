@@ -23,28 +23,9 @@ public class TariffService {
 
     private final TariffRepository tariffRepository;
     private final IncludedPackageRepository includedPackageRepository;
-    private final ServiceRepository serviceRepository;
-
-    public List<Tariff> findAllTariff() {
-        return tariffRepository.findAll();
-    }
 
     public Optional<Tariff> findTariffById(long userId) {
         return tariffRepository.findById(userId);
-    }
-
-
-    public List<Tariff> findByService(long serviceId) {
-        return tariffRepository.getTariffsByService(serviceRepository.getById(serviceId));
-    }
-    public List<Tariff> ascByCostTariff(long serviceId) {
-       return tariffRepository.
-               getTariffByServiceOrderByCostAsc(serviceRepository.getById(serviceId));
-
-    }
-    public List<Tariff> descByCostTariff(long serviceId) {
-        return tariffRepository.
-                getTariffByServiceOrderByCostDesc(serviceRepository.getById(serviceId));
     }
 
     public void createTariff(Tariff tariff) {
@@ -58,7 +39,7 @@ public class TariffService {
        Optional<Tariff> currentTariff = findTariffById(tariffId);
        if (currentTariff.isPresent()) {
            if (includedPackageRepository.existsByTariffId(tariffId)) {
-               errors.add("ADDED_BY_USER");
+               errors.add("already.add");
                return errors;
            }
            tariffRepository.delete(currentTariff.get());

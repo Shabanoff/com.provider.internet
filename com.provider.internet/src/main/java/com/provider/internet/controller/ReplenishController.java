@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.provider.internet.controller.util.constants.Attributes.*;
+import static com.provider.internet.controller.util.constants.Views.REPLENISH_VIEW;
 
 @Controller
 @RequestMapping("/site/user/replenish")
@@ -37,7 +38,7 @@ public class ReplenishController {
 
     @GetMapping
     public String viewReplenishPage() {
-        return "replenish";
+        return REPLENISH_VIEW;
     }
 
     @PostMapping
@@ -53,10 +54,10 @@ public class ReplenishController {
             session.setAttribute(Attributes.USER, userMapper.userToUserDto(user));
             return "account";
         }
-        log.info("LOGGIN HAS ERRORS!");
+        log.info("Amount HAS ERRORS!");
         request.setAttribute(Attributes.ERRORS, errors);
 
-        return "replenish";
+        return REPLENISH_VIEW;
     }
     private List<String> validateDataFromRequest(HttpServletRequest request) {
         List<String> errors = new ArrayList<>();

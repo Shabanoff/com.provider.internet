@@ -24,10 +24,6 @@ public interface Attributes {
     String LOGIN = "login";
     String PASSWORD = "password";
     String INCLUDED_PACKAGE_ID= "includedPackageId";
-    String PAGE= "page";
-
-    String LOGIN_PARAM = "login";
-   String PASSWORD_PARAM = "password";
     String INVALID_CREDENTIALS =
             "invalid.credentials";
     String ACTIVE_ACCOUNT_IS_EXIST =

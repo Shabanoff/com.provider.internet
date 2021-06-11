@@ -1,7 +1,12 @@
 package com.provider.internet.controller;
 
 import com.provider.internet.controller.util.PasswordStorage;
+import com.provider.internet.controller.util.Util;
 import com.provider.internet.controller.util.constants.Attributes;
+import com.provider.internet.controller.util.validator.AmountValidator;
+import com.provider.internet.controller.util.validator.LoginValidator;
+import com.provider.internet.controller.util.validator.ServiceIdValidator;
+import com.provider.internet.controller.util.validator.TariffNameValidator;
 import com.provider.internet.model.entity.Service;
 import com.provider.internet.model.entity.User;
 import com.provider.internet.model.enums.Role;
@@ -27,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.provider.internet.controller.util.constants.Attributes.*;
+import static com.provider.internet.controller.util.constants.Views.CREATE_USER_VIEW;
+import static com.provider.internet.controller.util.constants.Views.USERS_VIEW;
 
 @Controller
 @RequestMapping("/site/manager/create_user")
@@ -38,7 +45,7 @@ public class CreateUserController {
 
         @GetMapping
         public String viewCreatingPage() {
-            return "createUser";
+            return CREATE_USER_VIEW;
         }
 
         @PostMapping
@@ -46,10 +53,11 @@ public class CreateUserController {
                                  @RequestParam(LOGIN) String login,
                                  @RequestParam(PASSWORD) String password) {
             List<User> users = userService.findAll();
-            List<String> errors = new ArrayList<>();
+            List<String> errors = validateDataFromRequest(request);
             for (User user: users) {
                 if (user.getLogin().equals(login)){
-                    errors.add("This login has already booked");
+                    errors.add("login.booked");
+                    log.info("login.booked");
                 }
             }
             if (errors.isEmpty()) {
@@ -62,11 +70,16 @@ public class CreateUserController {
                 userService.createUser(user);
 
                request.setAttribute(Attributes.USERS, userMapper.usersToUsersDtoList(users));
-               return "users";
+               return USERS_VIEW;
             }
-            log.info("This login has already booked");
             request.setAttribute(Attributes.ERRORS, errors);
-            return "createUser";
+            return CREATE_USER_VIEW;
         }
+    private List<String> validateDataFromRequest(HttpServletRequest request) {
+        List<String> errors = new ArrayList<>();
+        Util.validateField(new LoginValidator(),
+                request.getParameter(LOGIN), errors);
+        return errors;
+    }
 }
 

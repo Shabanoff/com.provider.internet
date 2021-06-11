@@ -3,7 +3,6 @@ package com.provider.internet.controller;
 import com.provider.internet.controller.util.constants.Attributes;
 import com.provider.internet.model.entity.User;
 import com.provider.internet.model.mapper.UserMapper;
-import com.provider.internet.repository.UserRepository;
 import com.provider.internet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 import static com.provider.internet.controller.util.constants.Attributes.USER_ID;
+import static com.provider.internet.controller.util.constants.Views.USERS_VIEW;
 
 @Controller
 @RequestMapping("/site/manager/users")
@@ -25,12 +25,12 @@ import static com.provider.internet.controller.util.constants.Attributes.USER_ID
 public class UsersController {
     private final UserService userService;
     private final UserMapper userMapper;
-    private final UserRepository userRepository;
 
     @GetMapping
     public String viewUsers(HttpServletRequest request) {
+
         request.setAttribute(Attributes.USERS, userMapper.usersToUsersDtoList(userService.findAll()));
-        return "users";
+        return USERS_VIEW;
     }
 
     @PostMapping
@@ -38,13 +38,8 @@ public class UsersController {
         Optional<User> currentUser = userService.findUserById(userId);
         currentUser.ifPresent(userService::updateUserStatus);
         request.setAttribute(Attributes.USERS, userMapper.usersToUsersDtoList(userService.findAll()));
-        return "users";
+        return USERS_VIEW;
     }
-//    @GetMapping
-//    public String viewUsers(HttpServletRequest request) {
-//
-//        request.setAttribute(Attributes.USERS, userMapper.usersToUsersDtoList(userService.findAll()));
-//        return "users";
-//    }
+
 }
 

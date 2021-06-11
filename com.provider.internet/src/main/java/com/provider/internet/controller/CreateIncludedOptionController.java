@@ -1,9 +1,10 @@
 package com.provider.internet.controller;
 
+import com.provider.internet.controller.util.Util;
 import com.provider.internet.controller.util.constants.Attributes;
 import com.provider.internet.controller.util.constants.Views;
+import com.provider.internet.controller.util.validator.OptionNameValidator;
 import com.provider.internet.model.entity.IncludedOption;
-import com.provider.internet.model.mapper.OptionMapper;
 import com.provider.internet.service.IncludedOptionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static com.provider.internet.controller.util.constants.Attributes.*;
+import static com.provider.internet.controller.util.constants.Views.CREATE_OPTION_VIEW;
+import static com.provider.internet.controller.util.constants.Views.CREATE_SERVICE_VIEW;
 
 @Controller
 @RequestMapping("/site/manager/create_option")
@@ -29,15 +34,25 @@ public class CreateIncludedOptionController {
             getBundle(Views.PAGES_BUNDLE);
     @GetMapping
     public String viewCreatingPage() {
-        return "createOption";
+        return CREATE_OPTION_VIEW;
     }
 
     @PostMapping
-    public String createIncludedOption(HttpServletRequest request,
-                                       @RequestParam(DEFINITION) String definition) {
+    public String createIncludedOption(HttpServletRequest request,@RequestParam(DEFINITION) String definition) {
+        List<String> errors = validateDataFromRequest(request);
+        if (!errors.isEmpty()){
+            request.setAttribute(Attributes.ERRORS, errors);
+            return CREATE_SERVICE_VIEW;
+        }
         IncludedOption includedOption = new IncludedOption();
         includedOption.setDefinition(definition);
         includedOptionService.createIncludedOption(includedOption);
         return REDIRECTED + bundle.getString("manager.includedOption.path");
+    }
+    private List<String> validateDataFromRequest(HttpServletRequest request) {
+        List<String> errors = new ArrayList<>();
+        Util.validateField(new OptionNameValidator(),
+                request.getParameter(SERVICE_NAME), errors);
+        return errors;
     }
 }

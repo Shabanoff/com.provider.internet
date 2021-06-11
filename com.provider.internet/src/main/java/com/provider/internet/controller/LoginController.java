@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.util.*;
 
 import static com.provider.internet.controller.util.constants.Attributes.*;
+import static com.provider.internet.controller.util.constants.Views.LOGIN_VIEW;
 
 @Controller
 @RequestMapping("/site/login")
@@ -38,7 +39,7 @@ public class LoginController {
 
     @GetMapping
     public String viewLogin() {
-        return "login";
+        return LOGIN_VIEW;
     }
 
     @SneakyThrows
@@ -72,7 +73,7 @@ public class LoginController {
         log.info("LOGGIN HAS ERRORS!");
         addInvalidDataToRequest(request, userDto, errors);
 
-        return "login";
+        return LOGIN_VIEW;
     }
 
     private UserDto getDataFromRequest(HttpServletRequest request,

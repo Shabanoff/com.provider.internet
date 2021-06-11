@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.provider.internet.controller.util.constants.Attributes.*;
+import static com.provider.internet.controller.util.constants.Views.SERVICE_VIEW;
 
 @Controller
 @RequestMapping("/site/tariff")
@@ -33,7 +34,7 @@ public class TariffController {
     @GetMapping
     public String viewService(HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute(Attributes.SERVICES, serviceMapper.serviceListToServiceDtoList(serviceService.findAllService()));
-        return "service";
+        return SERVICE_VIEW;
     }
 
     @PostMapping("/update")
@@ -47,7 +48,7 @@ public class TariffController {
         tariff.ifPresent(value -> tariffService.changeCost(value, new BigDecimal(request.getParameter(Attributes.AMOUNT))));
         }
         request.setAttribute(Attributes.SERVICES, serviceMapper.serviceListToServiceDtoList(serviceService.findAllService()));
-        return "service";
+        return SERVICE_VIEW;
     }
 
     @PostMapping("/delete")
@@ -58,14 +59,14 @@ public class TariffController {
             request.setAttribute(Attributes.ERRORS, errors);
         }
         request.setAttribute(Attributes.SERVICES, serviceMapper.serviceListToServiceDtoList(serviceService.findAllService()));
-        return "service";
+        return SERVICE_VIEW;
     }
     @PostMapping
     public String sortTariff(HttpServletRequest request, @RequestParam(TYPE_SORT) String typeSort) {
         request.setAttribute(Attributes.SERVICES,
                 serviceMapper.serviceListToServiceDtoList(
                         serviceService.sortByCostTariff(typeSort)));
-        return "service";
+        return SERVICE_VIEW;
     }
     private List<String> validateDataFromRequest(HttpServletRequest request) {
         List<String> errors = new ArrayList<>();

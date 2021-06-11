@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 
 import static com.provider.internet.controller.util.constants.Attributes.OPTION_ID;
+import static com.provider.internet.controller.util.constants.Views.OPTION_VIEW;
 
 @Controller
 @RequestMapping("/site/manager/included_option")
@@ -26,7 +27,7 @@ public class IncludedOptionController {
     @GetMapping
     public String viewCreatingPage(HttpServletRequest request) {
         request.setAttribute(Attributes.OPTIONS, includedOptionService.findAllIncludedOption());
-        return "includedOption";
+        return OPTION_VIEW;
     }
 
     @PostMapping
@@ -34,7 +35,7 @@ public class IncludedOptionController {
         includedOptionService.deleteIncludedOption(optionsId);
         request.setAttribute(Attributes.OPTIONS, includedOptionMapper.
                 includedOptionsToIncludedOptionsDtoList(includedOptionService.findAllIncludedOption()));
-        return "includedOption";
+        return OPTION_VIEW;
     }
 
 }

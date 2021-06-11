@@ -9,7 +9,4 @@ public class ServiceIdValidator extends RegexValidator {
     public ServiceIdValidator() {
         super(AMOUNT_REGEX, MAX_LENGTH, INVALID_AMOUNT);
     }
-    public ServiceIdValidator(String message) {
-        super(AMOUNT_REGEX, MAX_LENGTH, message);
-    }
 }

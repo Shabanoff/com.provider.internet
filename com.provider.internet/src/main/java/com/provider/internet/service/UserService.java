@@ -1,9 +1,6 @@
 package com.provider.internet.service;
 
 import com.provider.internet.controller.util.PasswordStorage;
-import com.provider.internet.controller.util.Util;
-import com.provider.internet.controller.util.validator.LoginValidator;
-import com.provider.internet.controller.util.validator.PasswordValidator;
 import com.provider.internet.model.entity.IncludedPackage;
 import com.provider.internet.model.entity.Tariff;
 import com.provider.internet.model.entity.User;
@@ -11,7 +8,6 @@ import com.provider.internet.model.enums.Status;
 import com.provider.internet.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

@@ -40,12 +40,16 @@ public class ServiceService {
        List<Service> services = findAllService();
         if (ascDesc.equals("asc")) {
             for (Service service : services) {
-                service.setTariffs(service.getTariffs().stream().sorted(Comparator.comparing(Tariff::getCost)).collect(Collectors.toCollection(LinkedHashSet::new)));
+                service.setTariffs(service.getTariffs().stream().
+                        sorted(Comparator.comparing(Tariff::getCost)).
+                            collect(Collectors.toCollection(LinkedHashSet::new)));
             }
             return services;
         }
             for (Service service : services) {
-                service.setTariffs(service.getTariffs().stream().sorted(Comparator.comparing(Tariff::getCost).reversed()).collect(Collectors.toCollection(LinkedHashSet::new)));
+                service.setTariffs(service.getTariffs().stream().
+                        sorted(Comparator.comparing(Tariff::getCost).reversed()).
+                            collect(Collectors.toCollection(LinkedHashSet::new)));
             }
             return services;
         }
@@ -56,7 +60,7 @@ public class ServiceService {
         Optional<Service> currentService = findServiceById(serviceId);
         if (currentService.isPresent()) {
             if (includedPackageRepository.existsByServiceId(serviceId)) {
-                errors.add("ADDED_BY_USER");
+                errors.add("added.by.user");
                 return errors;
             }
             serviceRepository.delete(currentService.get());

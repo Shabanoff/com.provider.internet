@@ -15,6 +15,7 @@ import java.util.List;
 
 import static com.provider.internet.controller.util.constants.Attributes.INCLUDED_PACKAGE_ID;
 import static com.provider.internet.controller.util.constants.Attributes.USER;
+import static com.provider.internet.controller.util.constants.Views.ACCOUNT_VIEW;
 
 @Controller
 @RequestMapping("/site/account")
@@ -30,7 +31,7 @@ public class AccountController {
                 includedPackageService.findByUser(userDto.getId());
         request.setAttribute(Attributes.INCLUDED_PACKAGES, includedPackageMapper.includedPackagesToIncludedPackagesDtoList(includedPackages));
 
-        return "account";
+        return ACCOUNT_VIEW;
     }
 
     @PostMapping
@@ -40,7 +41,7 @@ public class AccountController {
         includedPackageService.deleteIncludedPackage(includedOptionId);
         request.setAttribute(Attributes.INCLUDED_PACKAGES, includedPackageMapper.includedPackagesToIncludedPackagesDtoList(includedPackages));
 
-        return "account";
+        return ACCOUNT_VIEW;
     }
 
 }

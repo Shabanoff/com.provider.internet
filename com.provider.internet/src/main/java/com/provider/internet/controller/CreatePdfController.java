@@ -20,6 +20,7 @@ import java.io.OutputStream;
 import java.util.ResourceBundle;
 
 import static com.provider.internet.controller.util.constants.Attributes.REDIRECTED;
+import static com.provider.internet.controller.util.constants.Views.SERVICE_VIEW;
 
 @Controller
 @RequestMapping("/site/downloadPdf")
@@ -35,7 +36,7 @@ public class CreatePdfController {
     @GetMapping
     public String viewService(HttpServletRequest request) {
         request.setAttribute(Attributes.SERVICES, serviceMapper.serviceListToServiceDtoList(serviceService.findAllService()));
-        return "service";
+        return SERVICE_VIEW;
     }
     @SneakyThrows
     @PostMapping

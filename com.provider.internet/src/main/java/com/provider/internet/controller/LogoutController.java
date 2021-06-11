@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.provider.internet.controller.util.constants.Views.HOME_VIEW;
+
 @Controller
 @RequestMapping("/site/logout")
 @RequiredArgsConstructor
@@ -17,6 +19,6 @@ public class LogoutController {
     @GetMapping
     public String viewService(HttpServletRequest request) {
         request.getSession().invalidate();
-        return "index";
+        return HOME_VIEW;
     }
 }

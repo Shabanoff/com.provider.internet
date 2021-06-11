@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.provider.internet.controller.util.constants.Attributes.*;
+import static com.provider.internet.controller.util.constants.Views.SERVICE_VIEW;
 
 @Controller
 @RequestMapping("/site/service")
@@ -28,7 +29,7 @@ public class ServiceController {
     public String viewService(HttpServletRequest request) {
         request.setAttribute(Attributes.SERVICES,
                 serviceMapper.serviceListToServiceDtoList(serviceService.findAllService()));
-        return "service";
+        return SERVICE_VIEW;
     }
 
     @PostMapping("/delete")
@@ -40,7 +41,7 @@ public class ServiceController {
             request.setAttribute(Attributes.ERRORS, errors);
         }
         request.setAttribute(Attributes.SERVICES, serviceMapper.serviceListToServiceDtoList(serviceService.findAllService()));
-        return "service";
+        return SERVICE_VIEW;
     }
 
     @PostMapping("/update")
@@ -54,7 +55,7 @@ public class ServiceController {
             request.setAttribute(Attributes.ERRORS, errors);
             log.info("Adding tariff HAS ERRORS!");
         }
-        return "service";
+        return SERVICE_VIEW;
     }
 
 }

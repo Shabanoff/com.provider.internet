@@ -70,8 +70,13 @@
 			<artifactId>spire.pdf</artifactId>
 			<version>3.11.6</version>
 		</dependency>
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+            <version>2.1.6</version>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
 	<repositories>
 		<repository>
