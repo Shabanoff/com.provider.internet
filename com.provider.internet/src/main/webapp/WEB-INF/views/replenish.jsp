@@ -24,8 +24,8 @@
             <h1 class="title"><fmt:message key="replenish"/></h1>
             <form class="form-signin" method="post">
                 <div class="form-floating">
-                    <input type="increase" class="form-control" name="amount" id="amount" placeholder="<fmt:message key="enter.amount"/>">
-                    <label for="amount"><fmt:message key="amount"/></label>
+                    <input type="increase" class="form-control" name="cost" id="cost" placeholder="<fmt:message key="enter.amount"/>">
+                    <label for="cost"><fmt:message key="amount"/></label>
                 </div>
                 <button class="w-100 btn btn-lg btn-primary" type="submit"><fmt:message key="replenish" /></button>
             </form>

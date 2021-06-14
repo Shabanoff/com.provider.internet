@@ -16,14 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static com.provider.internet.controller.util.constants.Attributes.*;
+import static com.provider.internet.controller.util.constants.Attributes.AMOUNT;
+import static com.provider.internet.controller.util.constants.Attributes.USER;
 import static com.provider.internet.controller.util.constants.Views.REPLENISH_VIEW;
 
 @Controller
@@ -50,7 +49,8 @@ public class ReplenishController {
         if (errors.isEmpty()) {
             User user = userService.increaseUserBalance(currentUser.getId(), amount);
             List<IncludedPackage> includedPackages = includedPackageService.findByUser(currentUser.getId());
-            request.setAttribute(Attributes.INCLUDED_PACKAGES, includedPackageMapper.includedPackagesToIncludedPackagesDtoList(includedPackages));
+            request.setAttribute(Attributes.INCLUDED_PACKAGES,
+                    includedPackageMapper.includedPackagesToIncludedPackagesDtoList(includedPackages));
             session.setAttribute(Attributes.USER, userMapper.userToUserDto(user));
             return "account";
         }
@@ -59,6 +59,7 @@ public class ReplenishController {
 
         return REPLENISH_VIEW;
     }
+
     private List<String> validateDataFromRequest(HttpServletRequest request) {
         List<String> errors = new ArrayList<>();
         Util.validateField(new AmountValidator(),

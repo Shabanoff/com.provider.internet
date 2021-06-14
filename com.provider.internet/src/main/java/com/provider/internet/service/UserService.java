@@ -53,15 +53,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void updateUserStatus(User user) {
+    public void updateUserStatus(User user, Status status) {
         Optional<User> currentUserOpt = findUserById(user.getId());
         if (currentUserOpt.isPresent()) {
             User currentUser = currentUserOpt.get();
-            if (currentUser.getStatus().equals(Status.ACTIVE)) {
-                currentUser.setStatus(Status.BLOCK);
-            } else {
-                currentUser.setStatus(Status.ACTIVE);
-            }
+                currentUser.setStatus(status);
             userRepository.save(user);
         }
     }
@@ -101,6 +97,9 @@ public class UserService {
         if (currentUserOpt.isPresent()) {
             User currentUser = currentUserOpt.get();
             currentUser.setBalance(currentUser.getBalance().add(amount));
+            if (currentUser.getStatus().equals(Status.BLOCK)){
+                currentUser.setStatus(Status.ACTIVE);
+            }
             userRepository.save(currentUser);
             return currentUser;
         }

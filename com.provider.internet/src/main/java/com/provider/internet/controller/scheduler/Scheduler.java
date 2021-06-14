@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -25,6 +26,8 @@ public class Scheduler {
         List<User> users =
                 userService.findAll();
 
+        users = users.stream().filter(user -> Status.ACTIVE.equals(user.getStatus())).collect(Collectors.toList());
+
         for (User user : users) {
             if (user.getStatus().equals(Status.ACTIVE)) {
                 for (IncludedPackage includedPackage : includedPackageService.findByUser(user.getId())) {
@@ -35,7 +38,7 @@ public class Scheduler {
                             userService.decreaseUserBalance(user, cost);
                         }
                     } else {
-                        userService.updateUserStatus(user);
+                        userService.updateUserStatus(user, Status.BLOCK);
                     }
 
                 }

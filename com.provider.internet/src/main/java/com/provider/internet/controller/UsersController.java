@@ -4,6 +4,7 @@ import com.provider.internet.controller.util.constants.Attributes;
 import com.provider.internet.controller.util.constants.Views;
 import com.provider.internet.model.dto.UserDto;
 import com.provider.internet.model.entity.User;
+import com.provider.internet.model.enums.Status;
 import com.provider.internet.model.mapper.UserMapper;
 import com.provider.internet.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -46,8 +47,15 @@ public class UsersController {
 
     @PostMapping
     public String changeUserStatus(HttpServletRequest request, @RequestParam(USER_ID) Long userId) {
-        Optional<User> currentUser = userService.findUserById(userId);
-        currentUser.ifPresent(userService::updateUserStatus);
+        Optional<User> currentUserOpt = userService.findUserById(userId);
+        if(currentUserOpt.isPresent()){
+            User currentUser = currentUserOpt.get();
+            if(Status.ACTIVE.equals(currentUser.getStatus())){
+                userService.updateUserStatus(currentUser, Status.BLOCK);
+            } else {
+                userService.updateUserStatus(currentUser, Status.ACTIVE);
+            }
+        }
         request.setAttribute(Attributes.USERS, userMapper.usersToUsersDtoList(userService.findAll()));
         return "redirect:" + bundle.
                 getString("users.path");
