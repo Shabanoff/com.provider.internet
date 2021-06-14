@@ -58,13 +58,13 @@ public class CrateTariffController {
                                @RequestParam(SERVICE_ID) String serviceId,
                                @RequestParam(OPTION_ID) Optional<String[]> optionsId) {
         List<String> errors = new ArrayList<>();
+        for (String error : validateDataFromRequest(request)) {
+                errors.add(error);
+        }
         if (!optionsId.isPresent()) {
             errors.add("empty.option");
         }
         if (!errors.isEmpty()) {
-            for (String error : validateDataFromRequest(request)) {
-                errors.add(error);
-            }
             request.setAttribute(Attributes.ERRORS, errors);
             request.setAttribute(SERVICES,
                     serviceMapper.serviceListToServiceDtoList(serviceService.findAllService()));

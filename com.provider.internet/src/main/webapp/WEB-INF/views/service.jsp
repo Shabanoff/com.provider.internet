@@ -22,8 +22,8 @@
   <div class="position-absolute top-0 end-0">
     <table>
       <thead>
-      <th><h2><p class="text-primary"><fmt:message
-              key="sort"/></p></h2></th>
+      <th><h4><p class="text-primary"><fmt:message
+              key="sort"/></p></h4></th>
       <th><div class="row">
         <div class="col-md-4 col-md-offset-4">
           <form action="${pageContext.request.contextPath}/site/tariff?sort=asc" method="post" >
