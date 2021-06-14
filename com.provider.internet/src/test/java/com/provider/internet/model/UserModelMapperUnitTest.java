@@ -50,7 +50,7 @@ class UserModelMapperUnitTest {
     }
 
     @Test
-    void mapCategoryDtoToCategory_shouldWorkCorrect() {
+    void mapUserDtoToUser_shouldWorkCorrect() {
         UserDto userDto = new UserDto();
         userDto.setBalance(BigDecimal.ZERO);
         userDto.setStatus(Status.ACTIVE);

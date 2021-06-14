@@ -58,7 +58,7 @@ public class TariffServiceUnitTest {
     }
 
     @Test
-    public void decreaseUserBalance_worksCorrectly() {
+    public void changeTariffCostNotFound_worksCorrectly() {
 
         Tariff tariff = new Tariff();
         tariff.setId(1L);
