@@ -4,7 +4,7 @@ public interface Attributes {
     String ERRORS = "errors";
     String WARNING = "warning";
     String MESSAGES = "messages";
-    String AMOUNT = "amount";
+    String AMOUNT = "cost";
     String USER = "user";
     String INCLUDED_PACKAGES = "includedPackages";
     String USER_LIST  ="activeUserList";
@@ -28,5 +28,8 @@ public interface Attributes {
             "invalid.credentials";
     String ACTIVE_ACCOUNT_IS_EXIST =
             "active.user.exist";
+    String PAGES = "numberOfPages";
+    String CURRENT_PAGE = "currentPage";
+
 
 }

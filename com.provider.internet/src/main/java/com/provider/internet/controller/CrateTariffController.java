@@ -27,7 +27,6 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static com.provider.internet.controller.util.constants.Attributes.*;
-import static com.provider.internet.controller.util.constants.Errors.*;
 import static com.provider.internet.controller.util.constants.Views.CREATE_TARIFF_VIEW;
 
 @Controller
@@ -59,11 +58,11 @@ public class CrateTariffController {
                                @RequestParam(SERVICE_ID) String serviceId,
                                @RequestParam(OPTION_ID) Optional<String[]> optionsId) {
         List<String> errors = new ArrayList<>();
-        if (!optionsId.isPresent()){
+        if (!optionsId.isPresent()) {
             errors.add("empty.option");
         }
-        if (!errors.isEmpty()){
-            for (String error:validateDataFromRequest(request)) {
+        if (!errors.isEmpty()) {
+            for (String error : validateDataFromRequest(request)) {
                 errors.add(error);
             }
             request.setAttribute(Attributes.ERRORS, errors);
@@ -84,7 +83,7 @@ public class CrateTariffController {
         tariff.setIncludedOptions(includedOptions);
         tariff.setCost(cost.get());
         if (serviceService.findServiceById(Long.parseLong(serviceId)).isPresent())
-        tariff.setService(serviceService.findServiceById(Long.parseLong(serviceId)).get());
+            tariff.setService(serviceService.findServiceById(Long.parseLong(serviceId)).get());
         tariff.setTariffName(tariffName);
         tariffService.createTariff(tariff);
         return REDIRECTED + bundle.getString("service.path");

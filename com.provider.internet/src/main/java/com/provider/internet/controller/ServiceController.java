@@ -48,7 +48,6 @@ public class ServiceController {
     public String plugTariff(HttpServletRequest request,
                              @SessionAttribute(USER) UserDto userDto,
                              @RequestParam(TARIFF_ID) Long tariffId) {
-
         List<String> errors = userService.updateUserTariff(userDto.getId(), tariffId);
         request.setAttribute(Attributes.SERVICES, serviceMapper.serviceListToServiceDtoList(serviceService.findAllService()));
         if (!errors.isEmpty()) {

@@ -35,6 +35,9 @@ public class UserService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
+    public Page<User> findAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
 
     public Optional<User> findUserById(long userId) {
         return userRepository.findById(userId);
@@ -70,11 +73,11 @@ public class UserService {
         if (tariffOptional.isPresent()) {
             Tariff tariff = tariffOptional.get();
             if (currentUser.getBalance().compareTo(tariff.getCost()) <= 0) {
-                error.add("Sorry, you have enough money");
+                error.add("no.money");
                 return error;
             }
             if (includedPackageService.existsByUserIdAndTariffId(currentUser, tariff)) {
-                error.add("Sorry, you have already plugin tariff");
+                error.add("already.add");
                 return error;
             }
             IncludedPackage includedPackage;

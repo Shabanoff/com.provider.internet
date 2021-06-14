@@ -31,7 +31,7 @@ import static com.provider.internet.controller.util.constants.Views.LOGIN_VIEW;
 @RequiredArgsConstructor
 @Slf4j
 public class LoginController {
-    private static final ResourceBundle bundle = ResourceBundle.
+    private final ResourceBundle bundle = ResourceBundle.
             getBundle(Views.PAGES_BUNDLE);
 
     private final UserService userService;

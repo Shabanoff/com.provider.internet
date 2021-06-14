@@ -3,6 +3,7 @@ package com.provider.internet.controller;
 import com.provider.internet.controller.util.PasswordStorage;
 import com.provider.internet.controller.util.Util;
 import com.provider.internet.controller.util.constants.Attributes;
+import com.provider.internet.controller.util.constants.Views;
 import com.provider.internet.controller.util.validator.AmountValidator;
 import com.provider.internet.controller.util.validator.LoginValidator;
 import com.provider.internet.controller.util.validator.ServiceIdValidator;
@@ -30,10 +31,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static com.provider.internet.controller.util.constants.Attributes.*;
 import static com.provider.internet.controller.util.constants.Views.CREATE_USER_VIEW;
-import static com.provider.internet.controller.util.constants.Views.USERS_VIEW;
 
 @Controller
 @RequestMapping("/site/manager/create_user")
@@ -41,7 +42,8 @@ import static com.provider.internet.controller.util.constants.Views.USERS_VIEW;
 @Slf4j
 public class CreateUserController {
         private final UserService userService;
-        private final UserMapper userMapper;
+        private final ResourceBundle bundle = ResourceBundle.
+            getBundle(Views.PAGES_BUNDLE);
 
         @GetMapping
         public String viewCreatingPage() {
@@ -69,8 +71,8 @@ public class CreateUserController {
                 user.setRole(Role.USER);
                 userService.createUser(user);
 
-               request.setAttribute(Attributes.USERS, userMapper.usersToUsersDtoList(users));
-               return USERS_VIEW;
+                return "redirect:" + bundle.
+                        getString("users.path");
             }
             request.setAttribute(Attributes.ERRORS, errors);
             return CREATE_USER_VIEW;

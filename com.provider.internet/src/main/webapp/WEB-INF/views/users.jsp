@@ -25,7 +25,6 @@
         </thead>
         <tbody>
         <c:forEach var="user" items="${requestScope.users}">
-            <c:if test="${user.user}">
                 <tr class="d-flex">
                     <td class="col-5"><c:out value="${user.login}"/></td>
                     <td class="col-3"><c:out value="${user.balance}"/><fmt:message key="currency"/></td>
@@ -44,7 +43,7 @@
                         </form>
                     </td>
                 </tr>
-            </c:if>
+
         </c:forEach>
         </tbody>
     </table>
@@ -56,7 +55,7 @@
 <div class="d-flex justify-content-center">
 <nav aria-label="Page navigation example">
     <ul class="pagination">
-        <c:if test="${requestScope.currentPage != 1}">
+        <c:if test="${requestScope.currentPage != 0}">
         <li class="page-item">
             <a class="page-link" href="${pageContext.request.contextPath}/site/manager/users?page=${requestScope.currentPage - 1}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
@@ -64,15 +63,15 @@
         </li></c:if>
         <c:forEach begin="1" end="${requestScope.numberOfPages}" var="i">
         <c:choose>
-        <c:when test="${requestScope.currentPage eq i}">
+        <c:when test="${requestScope.currentPage eq i-1}">
         <li class="page-item active"><a class="page-link" >${i}</a></li>
         </c:when>
         <c:otherwise>
-        <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/site/manager/users?page=${i}">${i}</a></li>
+        <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/site/manager/users?page=${i-1}">${i}</a></li>
         </c:otherwise>
         </c:choose>
         </c:forEach>
-        <c:if test="${requestScope.currentPage lt requestScope.numberOfPages}">
+        <c:if test="${requestScope.currentPage lt requestScope.numberOfPages-1}">
         <li class="page-item">
             <a class="page-link" href="${pageContext.request.contextPath}/site/manager/users?page=${requestScope.currentPage + 1}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
