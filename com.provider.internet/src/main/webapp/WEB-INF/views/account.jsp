@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>333
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <fmt:setLocale value="${sessionScope.locale}"/>
@@ -12,14 +13,15 @@
 <body>
 <jsp:include page="/WEB-INF/views/snippets/navbar.jsp"/>
 
-<c:if test="${not empty sessionScope.user }">
-    <c:if test="${sessionScope.user.user }">
+<sec:authorize access="isAuthenticated()">
+
+    <sec:authorize access="hasRole('ADMIN')">
     <div class="jumbotron">
         <div class="container">
             <h1><fmt:message key="user.balance"/>${sessionScope.user.balance}<fmt:message key="currency"/></h1>
         </div>
     </div>
-    </c:if>
+    </sec:authorize>
     <c:forEach var="includedPackage" items="${requestScope.includedPackages}">
         <div class="jumbotron">
             <div class="container">
@@ -60,7 +62,7 @@
         </tbody>
     </table>
     </c:forEach>
-</c:if>
+</sec:authorize>
 
 <jsp:include page="/WEB-INF/views/snippets/footer.jsp"/>
 </body>

@@ -9,6 +9,10 @@ import com.provider.internet.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -27,9 +31,10 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
     private final TariffService tariffService;
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final IncludedPackageService includedPackageService;
 
     public List<User> findAll() {
@@ -123,10 +128,18 @@ public class UserService {
         Optional<User> user = userRepository.getUserByLogin(login);
 
         return user
-                .filter(u -> PasswordStorage.checkSecurePassword(
-                        password, u.getPassword()))
+                .filter(u -> bCryptPasswordEncoder.encode(
+                        password).equals(u.getPassword()))
                 .isPresent();
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.getUserByLogin(s);
+        if (user.isPresent()){
+            return user.get();
+        }
+        return null;
+    }
 }
 

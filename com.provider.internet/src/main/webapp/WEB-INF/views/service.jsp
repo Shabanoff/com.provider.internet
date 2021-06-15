@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
@@ -52,23 +53,23 @@
           <th class="col-2" scope="col"><fmt:message key="tariff.name"/></th>
           <th class="col-4" scope="col"><fmt:message key="tariff.description"/></th>
           <th scope="col-2"><fmt:message key="tariff.cost"/></th>
-            <c:if test="${sessionScope.user.manager}">
+            <sec:authorize access="hasRole('ADMIN')">
           <th class="col-1"scope="col"><fmt:message key="change.cost"/></th>
-        </c:if>
+            </sec:authorize>
       </tr>
       </thead>
       <c:forEach var="service" items="${requestScope.services}">
         <tbody>
       <tr><div class="container">
         <th class="text-center"><h1>${service.serviceName}</h1></th>
-        <c:if test="${sessionScope.user.manager}">
+        <sec:authorize access="hasRole('ADMIN')">
         <th><form action="${pageContext.request.contextPath}/site/service/delete" method="post" >
           <input type="hidden" name="serviceId"
                  value="${service.id}"/>
           <button type="submit" class="btn btn-danger"><fmt:message
                   key="service.delete"/></button>
         </form></th>
-        </c:if>
+        </sec:authorize>
 
     <c:forEach var="tariff" items="${service.tariffs}">
       <tr>
@@ -81,7 +82,7 @@
           </ul>
         </td>
         <td><c:out value="${tariff.cost}"/></td>
-        <c:if test="${sessionScope.user.manager}">
+        <sec:authorize access="hasRole('ADMIN')">
         <td class="col-2">
           <table>
             <tr>
@@ -97,8 +98,8 @@
             </tr>
           </table>
         </td>
-        </c:if>
-        <c:if test="${not empty sessionScope.user and sessionScope.user.user and sessionScope.user.active}">
+        </sec:authorize>
+        <sec:authorize access="hasRole('USER')">
         <td class="col-1"><form action="${pageContext.request.contextPath}/site/service/update" method="post" >
           <input type="hidden" name="tariffId"
                  value="${tariff.id}"/>
@@ -106,8 +107,8 @@
                   key="tariff.plug"/></button>
         </form>
         </td>
-        </c:if>
-        <c:if test="${sessionScope.user.manager}">
+        </sec:authorize>
+        <sec:authorize access="hasRole('ADMIN')">
           <td><form action="${pageContext.request.contextPath}/site/tariff/delete" method="post" >
             <input type="hidden" name="tariffId"
                    value="${tariff.id}"/>
@@ -115,7 +116,7 @@
                     key="tariff.delete"/></button>
           </form>
           </td>
-        </c:if>
+        </sec:authorize>
       </tr>
     </c:forEach>
       </tbody>

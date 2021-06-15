@@ -18,7 +18,7 @@ import static com.provider.internet.controller.util.constants.Attributes.USER;
 import static com.provider.internet.controller.util.constants.Views.ACCOUNT_VIEW;
 
 @Controller
-@RequestMapping("/site/account")
+@RequestMapping("/site/user/account")
 @RequiredArgsConstructor
 @Slf4j
 public class AccountController {

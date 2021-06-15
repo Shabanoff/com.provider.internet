@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <fmt:setLocale value="${sessionScope.locale}"/>
@@ -10,20 +11,15 @@
     <link href="${pageContext.request.contextPath}/resources/css/login.css" rel="stylesheet">
 </head>
 <body class="text-center">
+<sec:authorize access="isAuthenticated()">
+    <% response.sendRedirect("/"); %>
+</sec:authorize>
 <main class="form-signin">
-    <c:if test="${not empty requestScope.errors}">
-        <div class="alert alert-danger">
-            <c:forEach items="${requestScope.errors}" var="error">
-                <strong><fmt:message key="error"/></strong> <fmt:message key="${error}"/><br>
-            </c:forEach>
-        </div>
-    </c:if>
-    <form class="form-signin" method="post">
-        <input type="hidden" name="command" value="login.post"/>
+    <form class="form-signin" method="POST" action="${pageContext.request.contextPath}/site/login">
         <div class="form-floating">
-            <input  class="form-control" name="login" id="login" placeholder="<fmt:message key="enter.login"/>"
+            <input  class="form-control" name="username" id="username" placeholder="<fmt:message key="enter.login"/>"
                    value="<c:out value="${requestScope.user.getLogin()}" />" required autofocus>
-            <label for="login"><fmt:message key="enter.login"/></label>
+            <label for="username"><fmt:message key="enter.login"/></label>
         </div>
 
         <div class="form-floating">

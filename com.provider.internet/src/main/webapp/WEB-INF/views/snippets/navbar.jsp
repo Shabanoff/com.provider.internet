@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="customTag" uri="/WEB-INF/customTags/selectedPageTag" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <fmt:setLocale value='${sessionScope.locale}'/>
@@ -21,19 +22,19 @@
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
     <div class="container-fluid">
-        <c:if test="${ sessionScope.user.manager}">
+        <sec:authorize access="hasRole('ADMIN')">
             <a class="navbar-brand" href="${pageContext.request.contextPath}/site/manager/users">Internet Provider</a>
-        </c:if>
-<c:if test="${sessionScope.user.user}">
-        <a class="navbar-brand" href="${pageContext.request.contextPath}/site/account">Internet Provider</a>
-</c:if>
+        </sec:authorize>
+        <sec:authorize access="hasRole('USER')">
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/site/user/account">Internet Provider</a>
+        </sec:authorize>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
 
-                <c:if test="${ sessionScope.user.manager}">
+                <sec:authorize access="hasRole('ADMIN')">
                     <li class="nav-item">
                     <c:choose>
                         <c:when test="${not managerPage.equals(currPage)}">
@@ -54,7 +55,7 @@
                             </c:otherwise>
                         </c:choose>
                     </li>
-                </c:if>
+                </sec:authorize>
                 <li class="nav-item">
                     <c:choose>
                         <c:when test="${not servicePage.equals(currPage)}">
@@ -65,7 +66,7 @@
                         </c:otherwise>
                     </c:choose>
                 </li>
-                <c:if test="${ sessionScope.user.manager}">
+                <sec:authorize access="hasRole('ADMIN')">
                     <li class="nav-item">
                         <c:choose>
                             <c:when test="${not createServicePage.equals(currPage)}">
@@ -106,43 +107,43 @@
                         </c:otherwise>
                     </c:choose>
                 </li>
-                </c:if>
+                </sec:authorize>
             </ul>
         </div>
         <div class="collapse navbar-collapse" id="navbarCollapse2">
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-            <c:if test="${ not empty sessionScope.user}">
-                <c:if test="${not sessionScope.user.user}">
+            <sec:authorize access="isAuthenticated()">
+                <sec:authorize access="hasRole('ADMIN')">
                     <li>
-                        <a class="nav-link" href="#"><fmt:message key="welcome"/> <c:out value="${sessionScope.user.getLogin()}"/></a>
+                        <a class="nav-link" href="#"><fmt:message key="welcome"/> ${pageContext.request.userPrincipal.name}</a>
                     </li>
-                </c:if>
+                </sec:authorize>
 
-                <c:if test="${ sessionScope.user.user}">
+                <sec:authorize access="hasRole('USER')">
                     <li>
                         <a class="nav-link" href="#"><fmt:message key="welcome"/> </a>
                     </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-bs-toggle="dropdown" aria-expanded="false"><c:out value="${sessionScope.user.getLogin()}"/></a>
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-bs-toggle="dropdown" aria-expanded="false">${pageContext.request.userPrincipal.name}</a>
                    <ul class="dropdown-menu" aria-labelledby="dropdown05">
                         <li><a class="btn btn-link" href="${pageContext.request.contextPath}/site/user/replenish" role="button"><fmt:message key="replenish"/></a></li>
                     </ul>
-                </li></c:if>
+                    </sec:authorize>
 
-            </c:if>
+            </sec:authorize>
 
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-            <c:if test="${empty sessionScope.user}">
+            <sec:authorize access="!isAuthenticated()">
                 <li>
                 <a class="btn btn-success" href="${pageContext.request.contextPath}/site/login" role="button"><fmt:message key="login"/></a>
                 </li>
-            </c:if>
-            <c:if test="${not empty sessionScope.user}">
+            </sec:authorize>
+            <sec:authorize access="isAuthenticated()">
                 <li>
-                    <a class="btn btn-danger" href="${pageContext.request.contextPath}/site/logout?command=logout" role="button"><fmt:message key="logout"/></a>
+                    <a class="btn btn-danger" href="${pageContext.request.contextPath}/logout" role="button"><fmt:message key="logout"/></a>
                 </li>
-            </c:if>
+            </sec:authorize>
         </ul>
         <ul class = "navbar-nav ms-auto mb-2 mb-md-1">
             <li class="nav-item dropdown">

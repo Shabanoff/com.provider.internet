@@ -1,13 +1,12 @@
 package com.provider.internet.model.dto;
 
-import com.provider.internet.model.enums.Role;
+import com.provider.internet.model.entity.Role;
 import com.provider.internet.model.enums.Status;
-import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class UserDto {
@@ -17,16 +16,14 @@ public class UserDto {
     private BigDecimal balance;
     private List<IncludedPackageDto> includedPackages;
     private Status status;
-    private Role role;
+    private Set<Role> role;
 
-    public boolean isManager() {
-        return Role.MANAGER.equals(role);
+    public boolean isUser(){
+        return role.contains(new Role(2L, "USER"));
     }
-
-    public boolean isUser() {
-        return Role.USER.equals(role);
+    public boolean isManager(){
+        return role.contains(new Role(1L, "ADMIN"));
     }
-
 
     public boolean isActive() {
         return Status.ACTIVE.equals(status);

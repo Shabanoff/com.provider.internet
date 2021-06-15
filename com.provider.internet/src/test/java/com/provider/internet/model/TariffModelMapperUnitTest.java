@@ -1,21 +1,13 @@
 package com.provider.internet.model;
 
 import com.provider.internet.model.dto.TariffDto;
-import com.provider.internet.model.dto.UserDto;
-import com.provider.internet.model.entity.IncludedOption;
-import com.provider.internet.model.entity.Service;
 import com.provider.internet.model.entity.Tariff;
-import com.provider.internet.model.entity.User;
-import com.provider.internet.model.enums.Role;
-import com.provider.internet.model.enums.Status;
 import com.provider.internet.model.mapper.TariffMapper;
-import com.provider.internet.model.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
