@@ -2,12 +2,14 @@ package com.provider.internet.controller;
 
 import com.provider.internet.controller.util.constants.Attributes;
 import com.provider.internet.model.dto.UserDto;
+import com.provider.internet.model.entity.User;
 import com.provider.internet.model.mapper.ServiceMapper;
 import com.provider.internet.model.mapper.UserMapper;
 import com.provider.internet.service.ServiceService;
 import com.provider.internet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,15 +51,15 @@ public class ServiceController {
 
     @PostMapping("/update")
     public String plugTariff(HttpSession session, HttpServletRequest request,
-                             @SessionAttribute(USER) UserDto userDto,
                              @RequestParam(TARIFF_ID) Long tariffId) {
-        List<String> errors = userService.updateUserTariff(userDto.getId(), tariffId);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<String> errors = userService.updateUserTariff(user.getId(), tariffId);
         request.setAttribute(Attributes.SERVICES, serviceMapper.serviceListToServiceDtoList(serviceService.findAllService()));
         if (!errors.isEmpty()) {
             request.setAttribute(Attributes.ERRORS, errors);
             log.info("Adding tariff HAS ERRORS!");
         }
-        session.setAttribute(Attributes.USER, userMapper.userToUserDto(userService.findUserById(userDto.getId()).get()));
+        session.setAttribute(Attributes.USER, userMapper.userToUserDto(userService.findUserById(user.getId()).get()));
         return SERVICE_VIEW;
     }
 

@@ -1,6 +1,5 @@
 package com.provider.internet.config;
 
-import com.provider.internet.model.entity.User;
 import com.provider.internet.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -5,6 +5,7 @@ import com.provider.internet.model.entity.Tariff;
 import com.provider.internet.repository.IncludedPackageRepository;
 import com.provider.internet.repository.ServiceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ServiceService {
 
+    private final TariffService tariffService;
     private final ServiceRepository serviceRepository;
     private final IncludedPackageRepository includedPackageRepository;
 
@@ -31,30 +33,29 @@ public class ServiceService {
         return serviceRepository.findById(serviceId);
     }
 
-
     public void createService(Service service) {
         serviceRepository.save(service);
     }
 
     public List<Service> sortByCostTariff(String ascDesc) {
-       List<Service> services = findAllService();
+        List<Service> services = findAllService();
         if (ascDesc.equals("asc")) {
             for (Service service : services) {
                 service.setTariffs(service.getTariffs().stream().
                         sorted(Comparator.comparing(Tariff::getCost)).
-                            collect(Collectors.toCollection(LinkedHashSet::new)));
+                        collect(Collectors.toCollection(LinkedHashSet::new)));
             }
             return services;
         }
-            for (Service service : services) {
-                service.setTariffs(service.getTariffs().stream().
-                        sorted(Comparator.comparing(Tariff::getCost).reversed()).
-                            collect(Collectors.toCollection(LinkedHashSet::new)));
-            }
-            return services;
+        for (Service service : services) {
+            service.setTariffs(service.getTariffs().stream().
+                    sorted(Comparator.comparing(Tariff::getCost).reversed()).
+                    collect(Collectors.toCollection(LinkedHashSet::new)));
         }
+        return services;
+    }
 
-
+    @Transactional
     public List<String> deleteService(long serviceId) {
         List<String> errors = new ArrayList<>();
         Optional<Service> currentService = findServiceById(serviceId);
@@ -63,6 +64,7 @@ public class ServiceService {
                 errors.add("added.by.user");
                 return errors;
             }
+            tariffService.deleteAllByServiceId(serviceId);
             serviceRepository.delete(currentService.get());
         }
         return errors;

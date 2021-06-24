@@ -32,6 +32,9 @@ public class TariffService {
         Objects.requireNonNull(tariff);
         tariffRepository.save(tariff);
     }
+    public void deleteAllByServiceId(long serviceId) {
+        tariffRepository.deleteAllByServiceId(serviceId);
+    }
 
 
     public List<String> deleteTariff(long tariffId) {

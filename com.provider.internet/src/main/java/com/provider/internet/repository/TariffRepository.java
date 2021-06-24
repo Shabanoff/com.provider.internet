@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface TariffRepository extends JpaRepository<Tariff, Long> {
-    List<Tariff> getTariffsByService(Service service);
+    void deleteAllByServiceId (long serviceId);
 
-    List<Tariff> getTariffByServiceOrderByCostAsc(Service service);
-
-    List<Tariff> getTariffByServiceOrderByCostDesc(Service service);
 }

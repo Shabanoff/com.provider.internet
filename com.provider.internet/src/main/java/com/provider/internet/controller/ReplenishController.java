@@ -12,6 +12,7 @@ import com.provider.internet.service.IncludedPackageService;
 import com.provider.internet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ import java.util.List;
 
 import static com.provider.internet.controller.util.constants.Attributes.AMOUNT;
 import static com.provider.internet.controller.util.constants.Attributes.USER;
+import static com.provider.internet.controller.util.constants.Views.ACCOUNT_VIEW;
 import static com.provider.internet.controller.util.constants.Views.REPLENISH_VIEW;
 
 @Controller
@@ -42,17 +44,16 @@ public class ReplenishController {
 
     @PostMapping
     public String changeUserBalance(HttpSession session, HttpServletRequest request,
-                                    @RequestParam(AMOUNT) BigDecimal amount,
-                                    @SessionAttribute(USER) UserDto currentUser) {
+                                    @RequestParam(AMOUNT) BigDecimal amount) {
         List<String> errors = validateDataFromRequest(request);
-
+        User sessionUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (errors.isEmpty()) {
-            User user = userService.increaseUserBalance(currentUser.getId(), amount);
-            List<IncludedPackage> includedPackages = includedPackageService.findByUser(currentUser.getId());
+            User user = userService.increaseUserBalance(sessionUser.getId(), amount);
+            List<IncludedPackage> includedPackages = includedPackageService.findByUser(sessionUser.getId());
             request.setAttribute(Attributes.INCLUDED_PACKAGES,
                     includedPackageMapper.includedPackagesToIncludedPackagesDtoList(includedPackages));
             session.setAttribute(Attributes.USER, userMapper.userToUserDto(user));
-            return "account";
+            return ACCOUNT_VIEW;
         }
         log.info("Amount HAS ERRORS!");
         request.setAttribute(Attributes.ERRORS, errors);

@@ -2,6 +2,7 @@ package com.provider.internet.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.provider.internet.model.dto.RoleDto;
 import com.provider.internet.model.dto.UserDto;
 import com.provider.internet.model.entity.Role;
 import com.provider.internet.model.entity.User;
@@ -27,7 +28,6 @@ class UserModelMapperUnitTest {
         user.setStatus(Status.ACTIVE);
         user.setId(1L);
         user.setLogin("test");
-        user.setRoles(Collections.singleton(new Role(2L, "ROLE_USER")));
 
         UserDto actual = mapper.userToUserDto(user);
 
@@ -35,7 +35,6 @@ class UserModelMapperUnitTest {
         assertThat(actual.getLogin()).isEqualTo(user.getLogin());
         assertThat(actual.getBalance()).isEqualTo(user.getBalance());
         assertThat(actual.getStatus()).isEqualTo(user.getStatus());
-        assertThat(actual.getRole()).isEqualTo(user.getRoles());
     }
 
     @Test
@@ -57,7 +56,7 @@ class UserModelMapperUnitTest {
         userDto.setStatus(Status.ACTIVE);
         userDto.setId(1L);
         userDto.setLogin("test");
-        userDto.setRole(Collections.singleton(new Role(2L, "ROLE_USER")));
+        userDto.setRole(Collections.singleton(new RoleDto(2L, "ROLE_USER")));
 
         User actual = mapper.userDtoToUser(userDto);
 
@@ -65,7 +64,6 @@ class UserModelMapperUnitTest {
         assertThat(actual.getLogin()).isEqualTo(userDto.getLogin());
         assertThat(actual.getBalance()).isEqualTo(userDto.getBalance());
         assertThat(actual.getStatus()).isEqualTo(userDto.getStatus());
-        assertThat(actual.getRoles()).isEqualTo(userDto.getRole());
     }
 
 }

@@ -8,12 +8,13 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+
 @Entity
 @Data
 @RequiredArgsConstructor
 public class IncludedPackage {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
@@ -31,7 +32,6 @@ public class IncludedPackage {
     @ManyToOne
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;
-
 
 
 }

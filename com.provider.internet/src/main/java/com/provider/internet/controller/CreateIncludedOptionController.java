@@ -42,7 +42,7 @@ public class CreateIncludedOptionController {
         List<String> errors = validateDataFromRequest(request);
         if (!errors.isEmpty()){
             request.setAttribute(Attributes.ERRORS, errors);
-            return CREATE_SERVICE_VIEW;
+            return CREATE_OPTION_VIEW;
         }
         IncludedOption includedOption = new IncludedOption();
         includedOption.setDefinition(definition);
@@ -52,7 +52,7 @@ public class CreateIncludedOptionController {
     private List<String> validateDataFromRequest(HttpServletRequest request) {
         List<String> errors = new ArrayList<>();
         Util.validateField(new OptionNameValidator(),
-                request.getParameter(SERVICE_NAME), errors);
+                request.getParameter(DEFINITION), errors);
         return errors;
     }
 }

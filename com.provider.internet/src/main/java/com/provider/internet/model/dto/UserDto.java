@@ -16,13 +16,13 @@ public class UserDto {
     private BigDecimal balance;
     private List<IncludedPackageDto> includedPackages;
     private Status status;
-    private Set<Role> role;
+    private Set<RoleDto> role;
 
     public boolean isUser(){
-        return role.contains(new Role(2L, "USER"));
+        return role.contains(new RoleDto(2L, "USER"));
     }
     public boolean isManager(){
-        return role.contains(new Role(1L, "ADMIN"));
+        return role.contains(new RoleDto(1L, "ADMIN"));
     }
 
     public boolean isActive() {

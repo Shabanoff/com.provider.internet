@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>333
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <fmt:setLocale value="${sessionScope.locale}"/>
@@ -15,13 +15,11 @@
 
 <sec:authorize access="isAuthenticated()">
 
-    <sec:authorize access="hasRole('ADMIN')">
     <div class="jumbotron">
         <div class="container">
-            <h1><fmt:message key="user.balance"/>${sessionScope.user.balance}<fmt:message key="currency"/></h1>
+            <h1><fmt:message key="user.balance"/><c:out value="${user.balance}"/><fmt:message key="currency"/></h1>
         </div>
     </div>
-    </sec:authorize>
     <c:forEach var="includedPackage" items="${requestScope.includedPackages}">
         <div class="jumbotron">
             <div class="container">
@@ -50,7 +48,7 @@
                 <td><c:out value="${includedPackage.tariff.cost}"/></td>
                 <td><c:out value="${includedPackage.subscriptionDate}"/></td>
                 <td>
-                    <form action="${pageContext.request.contextPath}/site/account" method="post" >
+                    <form action="${pageContext.request.contextPath}/site/user/account" method="post" >
                 <input type="hidden" name="command" value="delete"/>
                 <input type="hidden" name="includedPackageId"
                        value="${includedPackage.id}"/>
