@@ -4,7 +4,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<fmt:setLocale value='${sessionScope.locale}'/>
+<fmt:setLocale value='${requestScope.locale}'/>
 <fmt:setBundle basename="i18n.lang"/>
 
 <c:set var="servicePage" scope="page" value="/WEB-INF/views/service.jsp"/>
@@ -147,7 +147,7 @@
         </ul>
         <ul class = "navbar-nav ms-auto mb-2 mb-md-1">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">${sessionScope.locale.getLanguage().toUpperCase()}</a>
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">${requestScope.locale.getLanguage().toUpperCase()}</a>
                 <ul class="dropdown-menu" aria-labelledby="dropdown03">
                     <c:forEach items="${applicationScope.supportedLocales}" var="lang">
                         <li><a class="dropdown-item" href="?lang=${lang}">${lang.toUpperCase()}</a></li>

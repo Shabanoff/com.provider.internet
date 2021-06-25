@@ -2,6 +2,7 @@ package com.provider.internet.controller.i18n.filter;
 
 
 import com.provider.internet.controller.i18n.SupportedLocale;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Locale;
 
 @Component
@@ -28,13 +30,8 @@ public class LocaleFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
-        if(req.getParameter(LANG) != null) {
-            replaceUserLocale(req, resp);
-        }
 
-        if (req.getSession().getAttribute(LOCALE) == null && req.getCookies().length!=0) {
-            setUserLocale(req, resp);
-        }
+        setUserLocale(req, resp);
 
         chain.doFilter(request, response);
     }
@@ -44,20 +41,22 @@ public class LocaleFilter implements Filter {
 
     }
 
-    private void replaceUserLocale(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
+    private void setUserLocale(HttpServletRequest request, HttpServletResponse response) {
+
         String langParameter = request.getParameter(LANG);
-        Cookie localeCookie_lang = new Cookie( "locale", SupportedLocale.getLocaleOrDefault(langParameter).getLanguage() );
-        response.addCookie( localeCookie_lang );
-        Locale locale = SupportedLocale.getLocaleOrDefault(langParameter);
-        session.setAttribute(LOCALE, locale);
+        Locale locale;
+        if(Strings.isNotBlank(langParameter)){
+           locale = SupportedLocale.getLocaleOrDefault(langParameter);
+           Cookie localeCookie_lang = new Cookie( "locale", locale.getLanguage() );
+           response.addCookie( localeCookie_lang );
+        }else {
+
+            locale = SupportedLocale.getLocaleOrDefault(
+                    Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals(LOCALE)).
+                            map(Cookie::getValue).findFirst().orElse(SupportedLocale.getDefault().getLanguage()));
+        }
+        request.setAttribute(LOCALE, locale);
     }
 
-    private void setUserLocale(HttpServletRequest request, HttpServletResponse response) {
-        Cookie localeCookie_lang = new Cookie( "locale", SupportedLocale.getDefault().getLanguage() );
-        response.addCookie( localeCookie_lang );
-        HttpSession session = request.getSession();
-        Locale locale = SupportedLocale.getDefault();
-        session.setAttribute(LOCALE, locale);
-    }
+
 }
