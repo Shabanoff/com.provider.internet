@@ -6,12 +6,12 @@ import com.provider.internet.model.entity.User;
 import com.provider.internet.model.enums.Status;
 import com.provider.internet.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -30,15 +30,16 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService implements UserDetailsService {
     private final TariffService tariffService;
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final IncludedPackageService includedPackageService;
 
     public List<User> findAll() {
         return userRepository.findAll();
     }
+
     public Page<User> findAllUsers(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
@@ -47,22 +48,19 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(userId);
     }
 
-    public Optional<User> findByLogin(String login) {
-        return userRepository.getUserByLogin(login);
-
-    }
-
     public void createUser(User user) {
         Objects.requireNonNull(user);
         userRepository.save(user);
+        log.info("Create user successfully");
     }
 
     public void updateUserStatus(User user, Status status) {
         Optional<User> currentUserOpt = findUserById(user.getId());
         if (currentUserOpt.isPresent()) {
             User currentUser = currentUserOpt.get();
-                currentUser.setStatus(status);
+            currentUser.setStatus(status);
             userRepository.save(user);
+            log.info("Update status successfully");
         }
     }
 
@@ -74,10 +72,12 @@ public class UserService implements UserDetailsService {
             Tariff tariff = tariffOptional.get();
             if (currentUser.getBalance().compareTo(tariff.getCost()) <= 0) {
                 error.add("no.money");
+                log.info("User hasn't money to this tariff");
                 return error;
             }
             if (includedPackageService.existsByUserIdAndTariffId(currentUser, tariff)) {
                 error.add("already.add");
+                log.info("User already add this tariff");
                 return error;
             }
             IncludedPackage includedPackage;
@@ -91,8 +91,9 @@ public class UserService implements UserDetailsService {
             includedPackage.setUser(currentUser);
             includedPackage.setSubscriptionDate(LocalDate.now());
             includedPackageService.updateIncludePackage(includedPackage);
-            this.decreaseUserBalance(currentUser, tariff.getCost());
+            decreaseUserBalance(currentUser, tariff.getCost());
         }
+        log.info("User add tariff successfully");
         return error;
     }
 
@@ -101,7 +102,7 @@ public class UserService implements UserDetailsService {
         if (currentUserOpt.isPresent()) {
             User currentUser = currentUserOpt.get();
             currentUser.setBalance(currentUser.getBalance().add(amount));
-            if (currentUser.getStatus().equals(Status.BLOCK)){
+            if (currentUser.getStatus().equals(Status.BLOCK)) {
                 currentUser.setStatus(Status.ACTIVE);
             }
             userRepository.save(currentUser);
@@ -114,28 +115,19 @@ public class UserService implements UserDetailsService {
         Optional<User> currentUserOpt = findUserById(user.getId());
         if (currentUserOpt.isPresent()) {
             User currentUser = currentUserOpt.get();
-
             if (currentUser.getBalance().compareTo(amount) >= 0) {
-
                 currentUser.setBalance(currentUser.getBalance().subtract(amount));
                 userRepository.save(user);
             }
         }
     }
 
-    public boolean isCredentialsValid(String login, String password) {
-        Optional<User> user = userRepository.getUserByLogin(login);
-
-        return user
-                .filter(u -> bCryptPasswordEncoder.encode(
-                        password).equals(u.getPassword()))
-                .isPresent();
-    }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.getUserByLogin(s);
-        if (user.isPresent()){
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.getUserByLogin(login);
+        if (user.isPresent()) {
+            log.info("User is present");
             return user.get();
         }
         return null;

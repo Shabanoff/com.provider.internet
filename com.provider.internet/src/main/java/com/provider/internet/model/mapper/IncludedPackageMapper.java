@@ -1,15 +1,13 @@
 package com.provider.internet.model.mapper;
 
 import com.provider.internet.model.dto.IncludedPackageDto;
-import com.provider.internet.model.dto.ServiceDto;
 import com.provider.internet.model.entity.IncludedPackage;
-import com.provider.internet.model.entity.Service;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {TariffMapper.class, ServiceMapper.class},nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+@Mapper(componentModel = "spring", uses = {TariffMapper.class, ServiceMapper.class}, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface IncludedPackageMapper {
 
     IncludedPackage includedPackageDtoToIncludedPackage(IncludedPackageDto includedPackageDto);

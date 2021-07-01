@@ -9,7 +9,6 @@ import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
@@ -45,12 +44,11 @@ public class LocaleFilter implements Filter {
 
         String langParameter = request.getParameter(LANG);
         Locale locale;
-        if(Strings.isNotBlank(langParameter)){
-           locale = SupportedLocale.getLocaleOrDefault(langParameter);
-           Cookie localeCookie_lang = new Cookie( "locale", locale.getLanguage() );
-           response.addCookie( localeCookie_lang );
-        }else {
-
+        if (Strings.isNotBlank(langParameter)) {
+            locale = SupportedLocale.getLocaleOrDefault(langParameter);
+            Cookie localeCookie_lang = new Cookie("locale", locale.getLanguage());
+            response.addCookie(localeCookie_lang);
+        } else {
             locale = SupportedLocale.getLocaleOrDefault(
                     Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals(LOCALE)).
                             map(Cookie::getValue).findFirst().orElse(SupportedLocale.getDefault().getLanguage()));

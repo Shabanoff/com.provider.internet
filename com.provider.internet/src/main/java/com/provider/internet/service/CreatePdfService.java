@@ -16,18 +16,16 @@ import java.awt.geom.Point2D;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
 public class CreatePdfService {
 
-    private final IncludedOptionService includedOptionService;
     private final ServiceService serviceService;
 
 
     public void createServiceInPdf(OutputStream out) {
-//Create a PdfDocument instance
+        //Create a PdfDocument instance
 
         PdfDocument doc = new PdfDocument();
 
@@ -90,9 +88,9 @@ public class CreatePdfService {
             }
 
             //Create a PdfTable instance and set data source
-
             PdfTable table = new PdfTable();
-//set the default cell style and row style
+
+            //set the default cell style and row style
             table.getStyle().setCellPadding(2);
             table.getStyle().setBorderPen(new PdfPen(brush, 0.75f));
             table.getStyle().getDefaultStyle().setBackgroundBrush(PdfBrushes.getWhite());

@@ -10,7 +10,10 @@ import com.provider.internet.service.TariffService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.provider.internet.controller.util.constants.Attributes.*;
+import static com.provider.internet.controller.util.constants.Attributes.TARIFF_ID;
+import static com.provider.internet.controller.util.constants.Attributes.TYPE_SORT;
 import static com.provider.internet.controller.util.constants.Views.SERVICE_VIEW;
 
 @Controller
@@ -40,12 +44,12 @@ public class TariffController {
     @PostMapping("/update")
     public String changeTariffCost(HttpServletRequest request, @RequestParam(TARIFF_ID) Long tariffId) {
         List<String> errors = validateDataFromRequest(request);
-        if (!errors.isEmpty()){
+        if (!errors.isEmpty()) {
             request.setAttribute(Attributes.ERRORS, errors);
             log.info(errors.toString());
-        }else{
-        Optional<Tariff> tariff = tariffService.findTariffById(tariffId);
-        tariff.ifPresent(value -> tariffService.changeCost(value, new BigDecimal(request.getParameter(Attributes.AMOUNT))));
+        } else {
+            Optional<Tariff> tariff = tariffService.findTariffById(tariffId);
+            tariff.ifPresent(value -> tariffService.changeCost(value, new BigDecimal(request.getParameter(Attributes.AMOUNT))));
         }
         request.setAttribute(Attributes.SERVICES, serviceMapper.serviceListToServiceDtoList(serviceService.findAllService()));
         return SERVICE_VIEW;
@@ -61,6 +65,7 @@ public class TariffController {
         request.setAttribute(Attributes.SERVICES, serviceMapper.serviceListToServiceDtoList(serviceService.findAllService()));
         return SERVICE_VIEW;
     }
+
     @PostMapping
     public String sortTariff(HttpServletRequest request, @RequestParam(TYPE_SORT) String typeSort) {
         request.setAttribute(Attributes.SERVICES,
@@ -68,6 +73,7 @@ public class TariffController {
                         serviceService.sortByCostTariff(typeSort)));
         return SERVICE_VIEW;
     }
+
     private List<String> validateDataFromRequest(HttpServletRequest request) {
         List<String> errors = new ArrayList<>();
         Util.validateField(new AmountValidator(),

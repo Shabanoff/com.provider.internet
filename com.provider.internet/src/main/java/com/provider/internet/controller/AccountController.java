@@ -1,7 +1,6 @@
 package com.provider.internet.controller;
 
 import com.provider.internet.controller.util.constants.Attributes;
-import com.provider.internet.model.dto.UserDto;
 import com.provider.internet.model.entity.IncludedPackage;
 import com.provider.internet.model.entity.User;
 import com.provider.internet.model.mapper.IncludedPackageMapper;
@@ -9,17 +8,18 @@ import com.provider.internet.model.mapper.UserMapper;
 import com.provider.internet.service.IncludedPackageService;
 import com.provider.internet.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
 import static com.provider.internet.controller.util.constants.Attributes.INCLUDED_PACKAGE_ID;
-import static com.provider.internet.controller.util.constants.Attributes.USER;
 import static com.provider.internet.controller.util.constants.Views.ACCOUNT_VIEW;
 
 @Controller

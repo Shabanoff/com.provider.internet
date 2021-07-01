@@ -29,25 +29,25 @@
     <table class="table">
         <thead>
         <tr>
-            <th scope="col"><fmt:message key="tariff.name"/></th>
-            <th scope="col"><fmt:message key="tariff.description"/></th>
-            <th scope="col"><fmt:message key="tariff.cost"/></th>
-            <th scope="col"><fmt:message key="subscription.date"/></th>
+            <th class="col-1" scope="col"><fmt:message key="tariff.name"/></th>
+            <th class="col-2" scope="col"><fmt:message key="tariff.description"/></th>
+            <th class="col-1" scope="col"><fmt:message key="tariff.cost"/></th>
+            <th class="col-2" scope="col"><fmt:message key="subscription.date"/></th>
         </tr>
         </thead>
         <tbody>
             <tr>
-                <td><c:out value="${includedPackage.tariff.tariffName}"/></td>
-                <td>
+                <td class="col-1" ><c:out value="${includedPackage.tariff.tariffName}"/></td>
+                <td class="col-2" >
                     <ul>
                     <c:forEach var="option" items="${includedPackage.tariff.includedOptions}">
                         <li><c:out value="${option.definition}"/></li>
                     </c:forEach>
                     </ul>
                 </td>
-                <td><c:out value="${includedPackage.tariff.cost}"/></td>
-                <td><c:out value="${includedPackage.subscriptionDate}"/></td>
-                <td>
+                <td class="col-1" ><c:out value="${includedPackage.tariff.cost}"/></td>
+                <td class="col-2" ><c:out value="${includedPackage.subscriptionDate}"/></td>
+                <td class="col-1" >
                     <form action="${pageContext.request.contextPath}/site/user/account" method="post" >
                 <input type="hidden" name="command" value="delete"/>
                 <input type="hidden" name="includedPackageId"

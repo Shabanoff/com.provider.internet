@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.HashMap;
 import java.util.Set;
 
 @Entity
@@ -15,7 +14,7 @@ import java.util.Set;
 public class Service {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String serviceName;
 
@@ -23,7 +22,6 @@ public class Service {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Tariff> tariffs;
-
 
 
 }

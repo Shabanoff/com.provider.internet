@@ -1,7 +1,5 @@
 package com.provider.internet.model.dto;
 
-import com.provider.internet.model.entity.Tariff;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;

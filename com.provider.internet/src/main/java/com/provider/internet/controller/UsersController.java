@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static com.provider.internet.controller.util.constants.Attributes.REDIRECTED;
 import static com.provider.internet.controller.util.constants.Attributes.USER_ID;
 import static com.provider.internet.controller.util.constants.Views.USERS_VIEW;
 
@@ -48,9 +47,9 @@ public class UsersController {
     @PostMapping
     public String changeUserStatus(HttpServletRequest request, @RequestParam(USER_ID) Long userId) {
         Optional<User> currentUserOpt = userService.findUserById(userId);
-        if(currentUserOpt.isPresent()){
+        if (currentUserOpt.isPresent()) {
             User currentUser = currentUserOpt.get();
-            if(Status.ACTIVE.equals(currentUser.getStatus())){
+            if (Status.ACTIVE.equals(currentUser.getStatus())) {
                 userService.updateUserStatus(currentUser, Status.BLOCK);
             } else {
                 userService.updateUserStatus(currentUser, Status.ACTIVE);

@@ -15,14 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static com.provider.internet.controller.util.constants.Attributes.*;
+import static com.provider.internet.controller.util.constants.Attributes.DEFINITION;
+import static com.provider.internet.controller.util.constants.Attributes.REDIRECTED;
 import static com.provider.internet.controller.util.constants.Views.CREATE_OPTION_VIEW;
-import static com.provider.internet.controller.util.constants.Views.CREATE_SERVICE_VIEW;
 
 @Controller
 @RequestMapping("/site/manager/create_option")
@@ -32,16 +31,18 @@ public class CreateIncludedOptionController {
     private final IncludedOptionService includedOptionService;
     private final ResourceBundle bundle = ResourceBundle.
             getBundle(Views.PAGES_BUNDLE);
+
     @GetMapping
     public String viewCreatingPage() {
         return CREATE_OPTION_VIEW;
     }
 
     @PostMapping
-    public String createIncludedOption(HttpServletRequest request,@RequestParam(DEFINITION) String definition) {
+    public String createIncludedOption(HttpServletRequest request, @RequestParam(DEFINITION) String definition) {
         List<String> errors = validateDataFromRequest(request);
-        if (!errors.isEmpty()){
+        if (!errors.isEmpty()) {
             request.setAttribute(Attributes.ERRORS, errors);
+            log.info(errors.toString());
             return CREATE_OPTION_VIEW;
         }
         IncludedOption includedOption = new IncludedOption();
@@ -49,6 +50,7 @@ public class CreateIncludedOptionController {
         includedOptionService.createIncludedOption(includedOption);
         return REDIRECTED + bundle.getString("manager.includedOption.path");
     }
+
     private List<String> validateDataFromRequest(HttpServletRequest request) {
         List<String> errors = new ArrayList<>();
         Util.validateField(new OptionNameValidator(),

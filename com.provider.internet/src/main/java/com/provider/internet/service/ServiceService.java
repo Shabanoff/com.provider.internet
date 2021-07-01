@@ -5,6 +5,7 @@ import com.provider.internet.model.entity.Tariff;
 import com.provider.internet.repository.IncludedPackageRepository;
 import com.provider.internet.repository.ServiceRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
  */
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
+@Slf4j
 public class ServiceService {
 
     private final TariffService tariffService;
@@ -62,6 +64,7 @@ public class ServiceService {
         if (currentService.isPresent()) {
             if (includedPackageRepository.existsByServiceId(serviceId)) {
                 errors.add("added.by.user");
+                log.info("Service has already add by user");
                 return errors;
             }
             tariffService.deleteAllByServiceId(serviceId);

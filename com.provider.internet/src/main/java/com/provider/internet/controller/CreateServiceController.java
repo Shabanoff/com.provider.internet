@@ -3,10 +3,7 @@ package com.provider.internet.controller;
 import com.provider.internet.controller.util.Util;
 import com.provider.internet.controller.util.constants.Attributes;
 import com.provider.internet.controller.util.constants.Views;
-import com.provider.internet.controller.util.validator.AmountValidator;
-import com.provider.internet.controller.util.validator.ServiceIdValidator;
 import com.provider.internet.controller.util.validator.ServiceNameValidator;
-import com.provider.internet.controller.util.validator.TariffNameValidator;
 import com.provider.internet.model.entity.Service;
 import com.provider.internet.model.mapper.ServiceMapper;
 import com.provider.internet.service.ServiceService;
@@ -19,14 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static com.provider.internet.controller.util.constants.Attributes.*;
+import static com.provider.internet.controller.util.constants.Attributes.SERVICE_NAME;
 import static com.provider.internet.controller.util.constants.Views.CREATE_SERVICE_VIEW;
-import static com.provider.internet.controller.util.constants.Views.CREATE_TARIFF_VIEW;
 
 @Controller
 @RequestMapping("/site/manager/create_service")
@@ -34,7 +29,6 @@ import static com.provider.internet.controller.util.constants.Views.CREATE_TARIF
 @Slf4j
 public class CreateServiceController {
     private final ServiceService serviceService;
-    private final ServiceMapper serviceMapper;
     private final ResourceBundle bundle = ResourceBundle.
             getBundle(Views.PAGES_BUNDLE);
 
@@ -46,9 +40,10 @@ public class CreateServiceController {
     @PostMapping
     public String createService(HttpServletRequest request, @RequestParam(SERVICE_NAME) String serviceName) {
         List<String> errors = validateDataFromRequest(request);
-        if (!errors.isEmpty()){
-                request.setAttribute(Attributes.ERRORS, errors);
-                return CREATE_SERVICE_VIEW;
+        if (!errors.isEmpty()) {
+            request.setAttribute(Attributes.ERRORS, errors);
+            log.info(errors.toString());
+            return CREATE_SERVICE_VIEW;
 
         }
         Service service = new Service();
@@ -57,6 +52,7 @@ public class CreateServiceController {
         return "redirect:" + bundle.
                 getString("service.path");
     }
+
     private List<String> validateDataFromRequest(HttpServletRequest request) {
         List<String> errors = new ArrayList<>();
         Util.validateField(new ServiceNameValidator(),

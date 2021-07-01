@@ -12,7 +12,7 @@ public enum SupportedLocale {
 
     private final static Locale DEFAULT_LOCALE = EN.getLocale();
 
-    private Locale locale;
+    private final Locale locale;
 
     SupportedLocale(Locale locale) {
         this.locale = locale;

@@ -5,10 +5,11 @@ import com.provider.internet.model.entity.Service;
 import com.provider.internet.model.entity.Tariff;
 import com.provider.internet.model.entity.User;
 import com.provider.internet.repository.IncludedPackageRepository;
-import com.provider.internet.repository.ServiceRepository;
 import lombok.RequiredArgsConstructor;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 
 /**
@@ -21,21 +22,10 @@ import java.util.*;
 @RequiredArgsConstructor
 public class IncludedPackageService {
 
-    private final ServiceRepository serviceRepository;
-    private final TariffService tariffService;
     private final IncludedPackageRepository includedPackageRepository;
-
-    public List<IncludedPackage> findAllIncludedPackage() {
-        return includedPackageRepository.findAll();
-    }
 
     public Optional<IncludedPackage> findIncludedPackageById(long serviceId) {
         return includedPackageRepository.findById(serviceId);
-    }
-
-
-    public void createIncludedPackage(IncludedPackage includedPackage) {
-
     }
 
     public List<IncludedPackage> findByUser(long userId) {
@@ -46,16 +36,18 @@ public class IncludedPackageService {
         Objects.requireNonNull(includedPackage);
         includedPackageRepository.save(includedPackage);
     }
-    public Optional<IncludedPackage> findByUserIdAndServiceId(User user, Service service){
+
+    public Optional<IncludedPackage> findByUserIdAndServiceId(User user, Service service) {
         return includedPackageRepository.findByUserAndService(user, service);
     }
-    public boolean existsByUserIdAndTariffId (User user, Tariff tariff){
+
+    public boolean existsByUserIdAndTariffId(User user, Tariff tariff) {
         return includedPackageRepository.existsByUserAndTariff(user, tariff);
     }
 
     public void deleteIncludedPackage(long id) {
         if (findIncludedPackageById(id).isPresent())
-        includedPackageRepository.delete(findIncludedPackageById(id).get());
+            includedPackageRepository.delete(findIncludedPackageById(id).get());
     }
 }
 

@@ -1,8 +1,5 @@
 package com.provider.internet.model.dto;
 
-import com.provider.internet.model.entity.IncludedOption;
-import com.provider.internet.model.entity.Service;
-import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;

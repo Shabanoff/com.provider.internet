@@ -1,16 +1,10 @@
 package com.provider.internet.service;
 
 import com.provider.internet.model.entity.IncludedOption;
-import com.provider.internet.model.entity.Tariff;
 import com.provider.internet.repository.IncludedOptionRepository;
-import com.provider.internet.repository.IncludedPackageRepository;
-import com.provider.internet.repository.ServiceRepository;
-import com.provider.internet.repository.TariffRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class IncludedOptionService {
     private final IncludedOptionRepository includedOptionRepository;
+
     public List<IncludedOption> findAllIncludedOption() {
         return includedOptionRepository.findAll();
     }
@@ -42,7 +37,7 @@ public class IncludedOptionService {
 
     public void deleteIncludedOption(long includedOptionId) {
         if (findIncludedOptionById(includedOptionId).isPresent())
-        includedOptionRepository.delete(findIncludedOptionById(includedOptionId).get());
+            includedOptionRepository.delete(findIncludedOptionById(includedOptionId).get());
 
     }
 

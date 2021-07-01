@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -57,15 +56,13 @@ public class CrateTariffController {
                                @RequestParam(COST) Optional<BigDecimal> cost,
                                @RequestParam(SERVICE_ID) String serviceId,
                                @RequestParam(OPTION_ID) Optional<String[]> optionsId) {
-        List<String> errors = new ArrayList<>();
-        for (String error : validateDataFromRequest(request)) {
-                errors.add(error);
-        }
+        List<String> errors = new ArrayList<>(validateDataFromRequest(request));
         if (!optionsId.isPresent()) {
             errors.add("empty.option");
         }
         if (!errors.isEmpty()) {
             request.setAttribute(Attributes.ERRORS, errors);
+            log.info(errors.toString());
             request.setAttribute(SERVICES,
                     serviceMapper.serviceListToServiceDtoList(serviceService.findAllService()));
             request.setAttribute(Attributes.OPTIONS, includedOptionMapper.
